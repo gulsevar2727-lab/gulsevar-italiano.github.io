@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Italiano — 30 kun A2 gacha</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#faf8f5;--card:#fff;--text:#1a1814;--muted:#7a756e;--border:#e8e3db;--accent:#2d6a4f;--accent2:#c84b31;--done:#2d6a4f;--locked:#b5b0a8;--serif:'Playfair Display',serif;--sans:'DM Sans',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);font-family:var(--sans);color:var(--text);min-height:100vh}
+header{background:var(--text);color:#fff;padding:2rem 2rem 0;position:relative;overflow:hidden}
+header::after{content:'IT';position:absolute;right:-10px;top:-20px;font-family:var(--serif);font-size:140px;font-weight:700;color:rgba(255,255,255,0.05);pointer-events:none;line-height:1}
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-bottom:1.5rem}
+.logo{font-family:var(--serif);font-size:28px;font-weight:700;letter-spacing:-0.5px}
+.logo span{color:#c84b31}
+.tagline{font-size:13px;color:rgba(255,255,255,0.5);margin-top:4px}
+.progress-wrap{text-align:right}
+.progress-label{font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:6px}
+.progress-bar-outer{width:200px;height:6px;background:rgba(255,255,255,0.1);border-radius:3px;margin-left:auto}
+.progress-bar-inner{height:100%;background:#c84b31;border-radius:3px;transition:width 0.5s}
+.progress-num{font-family:var(--serif);font-size:22px;font-weight:700;margin-top:4px}
+.stats-row{display:flex;gap:2rem;flex-wrap:wrap;padding-bottom:1.2rem}
+.stat-val{font-family:var(--serif);font-size:20px;font-weight:500}
+.stat-lbl{font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.8px;margin-top:1px}
+.nav-tabs{display:flex;border-top:1px solid rgba(255,255,255,0.1);overflow-x:auto}
+.nav-tab{padding:12px 20px;font-size:13px;color:rgba(255,255,255,0.5);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all 0.15s;user-select:none}
+.nav-tab.active{color:#fff;border-bottom-color:#c84b31}
+.nav-tab:hover:not(.active){color:rgba(255,255,255,0.8)}
+.page{display:none;max-width:860px;margin:0 auto;padding:2rem 1.5rem}
+.page.active{display:block}
+
+/* DARSLAR */
+.week-section{margin-bottom:2.5rem}
+.week-header{display:flex;align-items:center;gap:12px;margin-bottom:1rem}
+.week-num{font-family:var(--serif);font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.week-title{font-family:var(--serif);font-size:20px;font-weight:500}
+.week-line{flex:1;height:0.5px;background:var(--border)}
+.days-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.day-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;cursor:pointer;transition:transform 0.15s,border-color 0.15s;position:relative;overflow:hidden}
+.day-card:hover:not(.locked){transform:translateY(-2px);border-color:#c0bab2}
+.day-card.done{border-color:var(--done);background:#f0faf5}
+.day-card.today{border-color:var(--accent2);border-width:2px}
+.day-card.locked{opacity:0.55;cursor:not-allowed}
+.day-card.done::before,.day-card.today::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.day-card.done::before{background:var(--done)}
+.day-card.today::before{background:var(--accent2)}
+.day-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.day-num{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px}
+.day-badge{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:500}
+.badge-done{background:#d4edda;color:#155724}
+.badge-today{background:#fde8e4;color:#9b2213}
+.badge-locked{background:#f0ede8;color:#999}
+.day-topic{font-family:var(--serif);font-size:15px;font-weight:500;margin-bottom:6px;line-height:1.3}
+.day-tasks{list-style:none}
+.day-tasks li{font-size:12px;color:var(--muted);padding:2px 0;display:flex;gap:6px;line-height:1.4}
+.day-tasks li::before{content:'—';color:var(--border);flex-shrink:0}
+.day-tasks li.td{text-decoration:line-through;color:var(--locked)}
+.day-tasks li.td::before{content:'✓';color:var(--done)}
+.streak-banner{background:#1a1814;color:#fff;border-radius:12px;padding:1rem 1.25rem;margin-bottom:2rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.streak-icon{font-size:28px}
+.streak-text{flex:1}
+.streak-title{font-family:var(--serif);font-size:16px;font-weight:500}
+.streak-sub{font-size:13px;color:rgba(255,255,255,0.5);margin-top:2px}
+.streak-num{font-family:var(--serif);font-size:32px;font-weight:700;color:#c84b31}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(20,18,14,0.6);z-index:100;overflow-y:auto;padding:1rem}
+.modal-overlay.open{display:flex;align-items:flex-start;justify-content:center}
+.modal{background:var(--card);border-radius:16px;width:100%;max-width:580px;margin:auto}
+.modal-header{background:var(--text);color:#fff;padding:1.5rem 1.5rem 1.2rem;border-radius:16px 16px 0 0;position:relative}
+.modal-day-num{font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.modal-title{font-family:var(--serif);font-size:22px;font-weight:500}
+.modal-close{position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,0.1);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.modal-body{padding:1.5rem}
+.modal-tabs{display:flex;gap:8px;margin-bottom:1.5rem;flex-wrap:wrap}
+.modal-tab{padding:7px 16px;border:1px solid var(--border);border-radius:20px;font-size:13px;cursor:pointer;background:var(--bg);color:var(--muted);transition:all 0.15s}
+.modal-tab.active{background:var(--text);color:#fff;border-color:var(--text)}
+.modal-section{display:none}
+.modal-section.active{display:block}
+.tsec-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;margin-top:1.2rem}
+.tsec-title:first-child{margin-top:0}
+.task-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;cursor:pointer;transition:background 0.1s}
+.task-item:hover{background:var(--bg)}
+.task-item.completed{background:#f0faf5;border-color:#a8d5b5}
+.task-check{width:20px;height:20px;border:1.5px solid var(--border);border-radius:50%;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:11px;color:transparent;transition:all 0.15s}
+.task-item.completed .task-check{background:var(--done);border-color:var(--done);color:#fff}
+.task-text{font-size:14px;line-height:1.5}
+.task-item.completed .task-text{text-decoration:line-through;color:var(--muted)}
+.task-tip{font-size:12px;color:var(--muted);margin-top:2px}
+.modal-words{background:#f7f4ef;border-radius:8px;padding:1rem;margin-top:0.5rem}
+.words-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.word-pair{font-size:13px;display:flex;gap:6px}
+.word-it{font-weight:500}
+.word-uz{color:var(--muted)}
+.complete-btn{width:100%;margin-top:1.5rem;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:var(--sans);font-size:15px;font-weight:500;cursor:pointer}
+.complete-btn:hover{opacity:0.88}
+.complete-btn.done-btn{background:var(--bg);color:var(--muted);border:1px solid var(--border);cursor:default}
+
+/* GAMES */
+.games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:2rem}
+.game-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;cursor:pointer;transition:transform 0.15s,border-color 0.15s}
+.game-card:hover{transform:translateY(-3px);border-color:#aaa}
+.game-icon{font-size:32px;margin-bottom:10px}
+.game-title{font-family:var(--serif);font-size:17px;font-weight:500;margin-bottom:4px}
+.game-desc{font-size:13px;color:var(--muted);line-height:1.5}
+.game-badge{display:inline-block;font-size:11px;padding:2px 10px;border-radius:20px;margin-top:10px;background:#f0ede8;color:var(--muted)}
+.game-area{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2rem;margin-bottom:1.5rem}
+.game-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.game-name{font-family:var(--serif);font-size:18px;font-weight:500}
+.game-sc{font-family:var(--serif);font-size:18px;color:var(--accent2)}
+.prog-bar{height:4px;background:var(--border);border-radius:2px;margin-bottom:1.5rem}
+.prog-inner{height:100%;background:var(--accent2);border-radius:2px;transition:width 0.3s}
+.game-q{font-size:20px;font-weight:500;text-align:center;padding:1.5rem;background:#f7f4ef;border-radius:10px;margin-bottom:1rem;min-height:70px;display:flex;align-items:center;justify-content:center;line-height:1.4}
+.opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt-btn{padding:13px;border:1.5px solid var(--border);border-radius:10px;background:var(--card);font-size:14px;cursor:pointer;transition:all 0.15s;text-align:center;font-family:var(--sans);line-height:1.3}
+.opt-btn:hover:not(:disabled){border-color:var(--text);background:#f7f4ef}
+.opt-btn.correct{background:#d4edda;border-color:#2d6a4f;color:#155724}
+.opt-btn.wrong{background:#fde8e4;border-color:#c84b31;color:#9b2213}
+.opt-btn:disabled{cursor:default}
+.game-fb{text-align:center;font-size:14px;padding:10px;border-radius:8px;margin-top:10px;min-height:36px}
+.game-fb.ok{background:#d4edda;color:#155724}
+.game-fb.err{background:#fde8e4;color:#9b2213}
+.next-btn{width:100%;margin-top:12px;padding:12px;background:var(--text);color:#fff;border:none;border-radius:10px;font-size:14px;cursor:pointer;font-family:var(--sans);display:none}
+.result-area{text-align:center;padding:2rem}
+.result-num{font-family:var(--serif);font-size:48px;font-weight:700;color:var(--accent2)}
+.result-lbl{font-size:15px;color:var(--muted);margin-top:4px}
+.play-again{margin-top:1.5rem;padding:12px 32px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:15px;cursor:pointer;font-family:var(--sans)}
+.back-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;margin-bottom:1.5rem;font-family:var(--sans)}
+
+/* MATCH */
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.match-col{display:flex;flex-direction:column;gap:8px}
+.match-item{padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;cursor:pointer;transition:all 0.15s;text-align:center;background:var(--card)}
+.match-item.sel{border-color:var(--accent2);background:#fde8e4;color:var(--accent2)}
+.match-item.matched{border-color:var(--done);background:#d4edda;color:#155724;cursor:default}
+.match-item.flash{border-color:#c84b31;background:#fde8e4}
+
+/* FILL */
+.fill-sent{font-size:18px;text-align:center;padding:1.5rem;background:#f7f4ef;border-radius:10px;margin-bottom:1rem;line-height:2}
+.fill-inp{border:2px solid var(--border);border-radius:8px;padding:6px 12px;font-size:16px;font-family:var(--sans);width:130px;text-align:center;outline:none;margin:0 4px}
+.fill-inp:focus{border-color:var(--accent2)}
+.fill-inp.ok{border-color:var(--done);background:#d4edda}
+.fill-inp.er{border-color:var(--accent2);background:#fde8e4}
+.check-btn{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:14px;cursor:pointer;font-family:var(--sans);margin-top:10px}
+
+/* TEST */
+.test-intro{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2rem;text-align:center;margin-bottom:1.5rem}
+.test-start-btn{padding:12px 32px;background:var(--text);color:#fff;border:none;border-radius:10px;font-size:15px;cursor:pointer;font-family:var(--sans)}
+.test-area{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2rem}
+.test-prog{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem}
+.tpb-out{flex:1;height:4px;background:var(--border);border-radius:2px}
+.tpb-in{height:100%;background:var(--accent2);border-radius:2px;transition:width 0.3s}
+.test-q{font-size:17px;font-weight:500;margin-bottom:1.5rem;line-height:1.4}
+.test-opts{display:flex;flex-direction:column;gap:10px}
+.test-opt{padding:13px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;cursor:pointer;transition:all 0.15s;text-align:left;font-family:var(--sans);background:var(--card)}
+.test-opt:hover:not(:disabled){border-color:var(--text);background:#f7f4ef}
+.test-opt.correct{background:#d4edda;border-color:#2d6a4f;color:#155724}
+.test-opt.wrong{background:#fde8e4;border-color:#c84b31;color:#9b2213}
+.test-opt:disabled{cursor:default}
+.test-result{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2.5rem;text-align:center}
+.result-pct{font-family:var(--serif);font-size:56px;font-weight:700}
+.test-break{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:1.5rem 0}
+.tb-item{background:#f7f4ef;border-radius:10px;padding:1rem;text-align:center}
+.tb-num{font-family:var(--serif);font-size:24px;font-weight:500}
+.tb-lbl{font-size:12px;color:var(--muted);margin-top:4px}
+
+/* VIDEOS */
+.v-section-title{font-family:var(--serif);font-size:20px;font-weight:500;margin-bottom:1rem;margin-top:2rem}
+.v-section-title:first-child{margin-top:0}
+.videos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:1rem}
+.vid-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform 0.15s}
+.vid-card:hover{transform:translateY(-2px)}
+.vid-thumb{width:100%;aspect-ratio:16/9;background:#1a1814;position:relative;display:flex;align-items:center;justify-content:center}
+.vid-thumb img{width:100%;height:100%;object-fit:cover}
+.play-ov{position:absolute;width:44px;height:44px;background:rgba(200,75,49,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.play-tri{width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:16px solid #fff;margin-left:3px}
+.vid-info{padding:12px}
+.vid-title{font-size:14px;font-weight:500;margin-bottom:3px;line-height:1.4}
+.vid-meta{font-size:12px;color:var(--muted)}
+.vid-lv{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;margin-top:6px}
+.lv-a1{background:#e8f4ef;color:#0f6e56}
+.lv-a2{background:#fde8e4;color:#9b2213}
+.lv-fun{background:#f0ede8;color:var(--muted)}
+
+/* VIDEO MODAL */
+.vmod-overlay{display:none;position:fixed;inset:0;background:rgba(20,18,14,0.7);z-index:200;align-items:center;justify-content:center;padding:1rem}
+.vmod-overlay.open{display:flex}
+.vmod{background:var(--card);border-radius:16px;width:100%;max-width:640px}
+.vmod-head{background:var(--text);color:#fff;padding:1.2rem 1.5rem;border-radius:16px 16px 0 0;position:relative}
+.vmod-close{position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,0.1);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.vmod-body{padding:1rem}
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;opacity:0;transition:all 0.3s;z-index:300;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-top">
+    <div><div class="logo">Italiano<span>.</span></div><div class="tagline">Gulsevar uchun — 0 dan A2 gacha, 30 kunda</div></div>
+    <div class="progress-wrap">
+      <div class="progress-label">umumiy progress</div>
+      <div class="progress-bar-outer"><div class="progress-bar-inner" id="pbar" style="width:0%"></div></div>
+      <div class="progress-num" id="ptext">0 / 30</div>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div><div class="stat-val" id="s-done">0</div><div class="stat-lbl">bajarildi</div></div>
+    <div><div class="stat-val" id="s-streak">0</div><div class="stat-lbl">ketma-ket</div></div>
+    <div><div class="stat-val" id="s-words">0</div><div class="stat-lbl">so'z</div></div>
+    <div><div class="stat-val" id="s-score">0</div><div class="stat-lbl">test ball</div></div>
+  </div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="showPage('darslar',this)">📚 Darslar</div>
+    <div class="nav-tab" onclick="showPage('oyinlar',this)">🎮 O'yinlar</div>
+    <div class="nav-tab" onclick="showPage('test',this)">📝 Test</div>
+    <div class="nav-tab" onclick="showPage('videolar',this)">🎬 Videolar</div>
+  </div>
+</header>
+
+<div class="page active" id="page-darslar"><div id="main-content"></div></div>
+
+<div class="page" id="page-oyinlar">
+  <div id="games-home" style="padding-top:0"></div>
+  <div id="game-area" style="display:none;padding-top:2rem"></div>
+</div>
+
+<div class="page" id="page-test">
+  <div id="test-home" style="padding-top:2rem">
+    <div class="test-intro">
+      <div style="font-family:var(--serif);font-size:22px;font-weight:500;margin-bottom:8px">Bilimingizni sinang</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:1.5rem">15 ta savol — grammatika, leksika, tarjima. A2 darajasiga mos. Har safar aralashtiriladi.</div>
+      <button class="test-start-btn" onclick="startTest()">Testni boshlash</button>
+    </div>
+  </div>
+  <div id="test-area" style="display:none;padding-top:2rem"></div>
+</div>
+
+<div class="page" id="page-videolar">
+  <div style="padding-top:2rem">
+    <div class="v-section-title">A1 darajasi uchun</div>
+    <div class="videos-grid">
+      <div class="vid-card" onclick="openVid('https://www.youtube.com/watch?v=n9rOAPR0pBk','Italyan alifbosi — to\'liq dars','Italiano Automatico')">
+        <div class="vid-thumb"><img src="https://img.youtube.com/vi/n9rOAPR0pBk/mqdefault.jpg" onerror="this.style.display='none'"><div class="play-ov"><div class="play-tri"></div></div></div>
+        <div class="vid-info"><div class="vid-title">Italyan alifbosi — to'liq dars</div><div class="vid-meta">Italiano Automatico</div><span class="vid-lv lv-a1">A1</span></div>
+      </div>
+      <div class="vid-card" onclick="openVid('https://www.youtube.com/watch?v=MO_ELxAQHbg','Italyancha salomlashish','Learn Italian with Lucrezia')">
+        <div class="vid-thumb"><img src="https://img.youtube.com/vi/MO_ELxAQHbg/mqdefault.jpg" onerror="this.style.display='none'"><div class="play-ov"><div class="play-tri"></div></div></div>
+        <div class="vid-info"><div class="vid-title">Italyancha salomlashish iboralari</div><div class="vid-meta">Learn Italian with Lucrezia</div><span class="vid-lv lv-a1">A1</span></div>
+      </div>
+      <div class="vid-card" onclick="openVid('https://www.youtube.com/watch?v=o9kV9Apceng','Essere fe\'li — tushuntirish','ItalianPod101')">
+        <div class="vid-thumb"><img src="https://img.youtube.com/vi/o9kV9Apceng/mqdefault.jpg" onerror="this.style.display='none'"><div class="play-ov"><div class="play-tri"></div></div></div>
+        <div class="vid-info"><div class="vid-title">Essere fe'li — to'liq tushuntirish</div><div class="vid-meta">ItalianPod101</div><span class="vid-lv lv-a1">A1</span></div>
+      </div>
+      <div class="vid-card" onclick="openVid('https://www.youtube.com/watch?v=pSCEGH3iY4c','100 ta muhim italyan so\'zi','Italiano Automatico')">
+        <div class="vid-thumb"><img src="https://img.youtube.com/vi/pSCEGH3iY4c/mqdefault.jpg" onerror="this.style.display='none'"><div class="play-ov"><div class="play-tri"></div></div></div>
+        <div class="vid-info"><div class="vid-title">100 ta eng muhim italyan so'zi</div><div class="vid-meta">Italiano Automatico</div><span class="vid-lv lv-a1">A1</span></div>
+      </div>
+    </div>
+    <div class="v-section-title">A2 darajasi uchun</div>
+    <div class="videos-grid">
+      <div class="vid-card" onclick="openVid('https://www.youtube.com/watch?v=R4oRB9YWXPE','Passato prossimo — mukammal','Learn Italian with Lucrezia')">
+        <div class="vid-thumb"><img src="https://img.youtube.com/vi/R4oRB9YWXPE/mqdefault.jpg" onerror="this.style.display='none'"><div class="play-ov"><div class="play-tri"></div></div></div>
+        <div class="vid-info"><div class="vid-title">Passato prossimo — mukammal tushuntirish</div><div class="vid-meta">Learn Italian with Lucrezia</div><span class="vid-lv lv-a2">A2</span></div>
+      </div>
+      <div class="vid-card" onclick="openVid('https://www.youtube.com/watch?v=_h6ZGEuJwkU','Italyan fe\'llari hozirgi zamon','ItalianPod101')">
+        <div class="vid-thumb"><img src="https://img.youtube.com/vi/_h6ZGEuJwkU/mqdefault.jpg" onerror="this.style.display='none'"><div class="play-ov"><div class="play-tri"></div></div></div>
+        <div class="vid-info"><div class="vid-title">Fe'llar — hozirgi zamon (-are/-ere/-ire)</div><div class="vid-meta">ItalianPod101</div><span class="vid-lv lv-a2">A2</span></div>
+      </div>
+      <div class="vid-card" onclick="openVid('https://www.youtube.com/watch?v=MoEYKHKFIDg','Preposizionlar a di in da','Learn Italian with Lucrezia')">
+        <div class="vid-thumb"><img src="https://img.youtube.com/vi/MoEYKHKFIDg/mqdefault.jpg" onerror="this.style.display='none'"><div class="play-ov"><div class="play-tri"></div></div></div>
+        <div class="vid-info"><div class="vid-title">Preposizionlar — a, di, in, da, su</div><div class="vid-meta">Learn Italian with Lucrezia</div><span class="vid-lv lv-a2">A2</span></div>
+      </div>
+      <div class="vid-card" onclick="openVid('https://www.youtube.com/watch?v=hb3bynNMfmQ','Coffee Break Italian Ep.1','Coffee Break Languages')">
+        <div class="vid-thumb"><img src="https://img.youtube.com/vi/hb3bynNMfmQ/mqdefault.jpg" onerror="this.style.display='none'"><div class="play-ov"><div class="play-tri"></div></div></div>
+        <div class="vid-info"><div class="vid-title">Coffee Break Italian — 1-dars</div><div class="vid-meta">Coffee Break Languages · Podcast</div><span class="vid-lv lv-fun">Podcast</span></div>
+      </div>
+    </div>
+    <div style="background:#f7f4ef;border-radius:12px;padding:1.25rem;margin-top:1rem;font-size:13px;color:var(--muted);line-height:1.6"><strong style="color:var(--text)">Maslahat:</strong> Videolarni 2 marta ko'ring — birinchi subtitrsiz, ikkinchi subtitri bilan. Quloqni o'rgatadi.</div>
+  </div>
+</div>
+
+<!-- VIDEO MODAL -->
+<div class="vmod-overlay" id="vmod" onclick="closeVid(event)">
+  <div class="vmod">
+    <div class="vmod-head">
+      <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px" id="vchannel"></div>
+      <div style="font-family:var(--serif);font-size:18px" id="vtitle"></div>
+      <button class="vmod-close" onclick="closeVid()">✕</button>
+    </div>
+    <div class="vmod-body">
+      <div style="background:#000;border-radius:10px;overflow:hidden;margin-bottom:1rem">
+        <iframe id="vframe" width="100%" height="300" frameborder="0" allowfullscreen style="display:block"></iframe>
+      </div>
+      <a id="vlink" href="#" target="_blank" style="display:inline-block;padding:8px 20px;background:var(--accent2);color:#fff;border-radius:8px;font-size:13px;text-decoration:none">YouTube'da ochish</a>
+    </div>
+  </div>
+</div>
+
+<!-- DAY MODAL -->
+<div class="modal-overlay" id="day-modal" onclick="handleOvClick(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-day-num" id="m-daynum"></div>
+      <div class="modal-title" id="m-title"></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const DAYS=[
+  {t:"Alfavit va talaffuz",w:1,tasks:[{t:"Italyan alfavitini o'qing va tinglang (YouTube: 'alfabeto italiano')",tip:"21 harf — inglizdan farqi oz"},{t:"Har bir harfni yozing, 3 martadan takrorlang",tip:""},{t:"Talaffuz qoidalari: c, g, gl, gn, sc harflari",tip:""},{t:"10 ta italyan so'zini to'g'ri o'qing",tip:""}],words:[["ciao","salom"],["grazie","rahmat"],["prego","marhamat"],["sì","ha"],["no","yo'q"],["bene","yaxshi"],["male","yomon"],["come","qanday"],["dove","qayerda"],["quando","qachon"]]},
+  {t:"Salomlashish va tanishish",w:1,tasks:[{t:"Buongiorno, Buonasera, Ciao, Arrivederci — yodlang",tip:""},{t:"O'zingizni italyancha tanishtiring: Mi chiamo Gulsevar",tip:""},{t:"Come ti chiami? Di dove sei? — mashq",tip:""},{t:"Duolingo: birinchi 2 darsni bajaring",tip:""}],words:[["mi chiamo","ismim"],["sono di","...danman"],["piacere","xursand bo'ldim"],["quanti anni hai","necha yoshsiz"],["ho 21 anni","21 yoshdaman"],["lavoro","ishlayman"],["studio","o'qiyman"],["abito a","...da yashaman"],["parli inglese","inglizcha bilasizmi"],["un po'","biroz"]]},
+  {t:"Sonlar 1–100",w:1,tasks:[{t:"1 dan 20 gacha sonlarni yodlang (uno...venti)",tip:""},{t:"20 dan 100 gacha: venti, trenta, quaranta...",tip:""},{t:"Sana va yil o'qish mashqi",tip:""},{t:"Telefon raqamingizni italyancha ayting",tip:""}],words:[["uno","1"],["due","2"],["tre","3"],["dieci","10"],["venti","20"],["trenta","30"],["cento","100"],["mille","1000"],["primo","birinchi"],["secondo","ikkinchi"]]},
+  {t:"Ranglar va sifatlar",w:1,tasks:[{t:"Asosiy ranglarni yodlang",tip:""},{t:"Sifat mos kelishi: il libro rosso, la borsa rossa",tip:""},{t:"10 ta narsa rangini italyancha ayting",tip:""},{t:"Anki: 20 so'zdan kartochka yasang",tip:""}],words:[["rosso","qizil"],["blu","ko'k"],["verde","yashil"],["giallo","sariq"],["bianco","oq"],["nero","qora"],["grande","katta"],["piccolo","kichik"],["bello","chiroyli"],["brutto","xunuk"]]},
+  {t:"Vaqt va kun tartiboti",w:1,tasks:[{t:"Che ore sono? — soat o'qishni o'rganish",tip:""},{t:"Hafta kunlari: lunedì, martedì...",tip:""},{t:"Oylar: gennaio, febbraio...",tip:""},{t:"Kundalik faoliyat: mi alzo, vado al lavoro...",tip:""}],words:[["mattina","ertalab"],["pomeriggio","tushdan keyin"],["sera","kechqurun"],["notte","kecha"],["oggi","bugun"],["ieri","kecha"],["domani","ertaga"],["presto","tez"],["tardi","kech"],["adesso","hozir"]]},
+  {t:"Oila va odamlar",w:1,tasks:[{t:"Oila a'zolari: madre, padre, fratello, sorella...",tip:""},{t:"Jismoniy tavsif: alto, basso, capelli neri",tip:""},{t:"Oilangiz haqida 5 gap yozing",tip:""},{t:"Duolingo: 2 ta yangi dars",tip:""}],words:[["madre","ona"],["padre","ota"],["fratello","aka/uka"],["sorella","opa/singil"],["marito","er"],["moglie","xotin"],["figlio","o'g'il"],["figlia","qiz"],["nonno","buva"],["nonna","buvi"]]},
+  {t:"1-hafta takrori va test",w:1,tasks:[{t:"150 ta so'zni Anki bilan takrorlang",tip:""},{t:"O'zingizni italyancha 10 gapda tanishtiring",tip:""},{t:"Online A1 test topshiring (languagesonline.org.uk)",tip:""},{t:"Italyan qo'shig'i tinglang va so'zlarni toping",tip:""}],words:[["benissimo","juda yaxshi"],["capisco","tushundim"],["non capisco","tushunmadim"],["puoi ripetere","qaytaring"],["piano","sekin"],["forte","baland"],["sbagliato","noto'g'ri"],["giusto","to'g'ri"],["esatto","aniq"],["perfetto","mukammal"]]},
+  {t:"Essere fe'li — to'liq",w:2,tasks:[{t:"sono, sei, è, siamo, siete, sono — yodlang",tip:""},{t:"Essere bilan 10 ta gap tuzing",tip:"Sono studentessa. È bella."},{t:"Sono vs Ho farqini tushunish",tip:""},{t:"Mashq: bo'sh joylarni to'ldiring",tip:""}],words:[["sono","menman"],["sei","sensan"],["è","u"],["siamo","biz"],["siete","sizlar"],["professore","professor"],["avvocato","advokat"],["studente","talaba"],["italiano","italyan"],["uzbeko","o'zbek"]]},
+  {t:"Avere fe'li va egalik",w:2,tasks:[{t:"ho, hai, ha, abbiamo, avete, hanno — yodlang",tip:""},{t:"Ho fame, ho sete, ho sonno — iboralar",tip:""},{t:"Egalik konstruksiya: Ho un libro",tip:""},{t:"5 ta avere + 5 ta essere bilan gap",tip:""}],words:[["ho","menda bor"],["hai","senda bor"],["ha","unda bor"],["fame","ochlik"],["sete","chanqoqlik"],["sonno","uyqu"],["fretta","shoshilish"],["paura","qo'rquv"],["ragione","haq"],["torto","noto'g'ri"]]},
+  {t:"-are fe'llari: hozirgi zamon",w:2,tasks:[{t:"-are fe'llari: -o,-i,-a,-iamo,-ate,-ano",tip:""},{t:"10 ta -are fe'l yodlang va tushlang",tip:"parlare, mangiare, lavorare..."},{t:"Har bir fe'ldan 2 ta gap tuzing",tip:""},{t:"Dialog: qayerda ishlayotganingizni ayting",tip:""}],words:[["parlare","gapirmoq"],["mangiare","yemoq"],["lavorare","ishlamoq"],["studiare","o'qimoq"],["abitare","yashimoq"],["guardare","qaramoq"],["ascoltare","tinglamoq"],["imparare","o'rganmoq"],["chiamare","qo'ng'iroq qilmoq"],["camminare","yurmoq"]]},
+  {t:"-ere va -ire fe'llari",w:2,tasks:[{t:"-ere: leggere, scrivere, vedere, prendere",tip:""},{t:"-ire: dormire, sentire, aprire, capire",tip:""},{t:"Noto'g'ri fe'llar: fare, andare, venire, dare",tip:"Bularni alohida yodlang!"},{t:"Anki: bugungi barcha fe'llarni qo'shing",tip:""}],words:[["leggere","o'qimoq"],["scrivere","yozmoq"],["vedere","ko'rmoq"],["prendere","olmoq"],["dormire","uxlamoq"],["sentire","eshitmoq"],["andare","bormoq"],["venire","kelmoq"],["fare","qilmoq"],["stare","turmoq"]]},
+  {t:"Artikl va otlar jinsi",w:2,tasks:[{t:"Aniq artikl: il, lo, la, i, gli, le",tip:""},{t:"Noaniq artikl: un, uno, una, un'",tip:""},{t:"Ko'plik yasash: -o→-i, -a→-e, -e→-i",tip:""},{t:"20 ta ot — articleli va ko'plikda",tip:""}],words:[["il libro","kitob"],["la borsa","sumka"],["lo zaino","ryukzak"],["i libri","kitoblar"],["le borse","sumkalar"],["un uomo","bir erkak"],["una donna","bir ayol"],["uno studente","talaba"],["l'amica","do'st (qiz)"],["un'ora","bir soat"]]},
+  {t:"Preposizionlar: a, di, in, da, con",w:2,tasks:[{t:"5 ta asosiy preposizion qoidalari",tip:"Vado a Roma. Sono di Tashkent."},{t:"Artikl bilan birikma: al, del, nel, dal",tip:""},{t:"10 ta gap preposizionlar bilan",tip:""},{t:"Do'konda dialog o'qing",tip:""}],words:[["a","ga/-da"],["di","ning/dan"],["in","ichida"],["da","dan"],["con","bilan"],["per","uchun"],["su","ustida"],["tra","orasida"],["senza","siz"],["fino a","gacha"]]},
+  {t:"2-hafta takrori",w:2,tasks:[{t:"Do'konda: Quanto costa? Vorrei...",tip:""},{t:"Yo'l so'rash: Dov'è? Giri a destra...",tip:""},{t:"300 so'z: Anki statistikasini tekshiring",tip:""},{t:"Italyan serial ko'ring (subtitri bilan)",tip:""}],words:[["quanto costa","qancha turadi"],["vorrei","xohlayman"],["dov'è","qayerda"],["a destra","o'ngga"],["a sinistra","chapga"],["dritto","to'g'ri"],["vicino","yaqin"],["lontano","uzoq"],["fermata","to'xtash joyi"],["uscita","chiqish"]]},
+  {t:"Passato prossimo — kirish",w:3,tasks:[{t:"Tuzilishi: avere/essere + participio passato",tip:""},{t:"-are→-ato, -ere→-uto, -ire→-ito qoidasi",tip:""},{t:"Essere bilan ishlatiluvchi fe'llar",tip:"andare, venire, uscire, entrare..."},{t:"Kecha nima qilganingizni 5 gapda yozing",tip:""}],words:[["ho mangiato","yedim"],["ho studiato","o'qidim"],["sono andato/a","bordim"],["sono venuto/a","keldim"],["ho lavorato","ishladim"],["ho dormito","uxladim"],["ho parlato","gapirdim"],["sono uscito/a","chiqdim"],["ho visto","ko'rdim"],["ho fatto","qildim"]]},
+  {t:"O'tgan zamonda hikoya",w:3,tasks:[{t:"prima, poi, dopo, infine — ketma-ketlik",tip:""},{t:"Noto'g'ri participiolar: fatto, visto, letto",tip:""},{t:"Do'stingizga dam olish kuni haqida gapirib bering",tip:""},{t:"Duolingo: o'tgan zamon moduli",tip:""}],words:[["prima","avval"],["poi","keyin"],["dopo","undan keyin"],["infine","nihoyat"],["ieri","kecha"],["l'altro ieri","arisiga"],["la settimana scorsa","o'tgan hafta"],["il mese scorso","o'tgan oy"],["stamattina","bu ertalab"],["ieri sera","kecha kechqurun"]]},
+  {t:"Restoran va ovqat",w:3,tasks:[{t:"Restoranda: Vorrei ordinare...",tip:""},{t:"Italyan taomlar: pizza, pasta, risotto...",tip:""},{t:"Online italyan menyuni o'qing va tanlang",tip:""},{t:"Role-play: kamerdor va mijoz dialog",tip:""}],words:[["il menù","menyu"],["il primo","birinchi taom"],["il secondo","ikkinchi taom"],["il dolce","shirinlik"],["acqua naturale","oddiy suv"],["acqua frizzante","gazli suv"],["il conto","hisob"],["sono vegetariano/a","vegetarianman"],["è delizioso","mazali"],["buon appetito","ishtaha ochiq bo'lsin"]]},
+  {t:"Kiyim va xarid",w:3,tasks:[{t:"Kiyim: camicia, pantaloni, scarpe, giacca...",tip:""},{t:"Do'konda: Posso provarlo? Che taglia?",tip:""},{t:"Ranglar + kiyim: una giacca blu",tip:""},{t:"Anki: bugungi 15 so'z",tip:""}],words:[["camicia","ko'ylak"],["pantaloni","shim"],["scarpe","poyabzal"],["giacca","kurtka"],["vestito","ko'ylak"],["taglia","o'lcham"],["provare","kiyib ko'rish"],["caro","qimmat"],["economico","arzon"],["lo sconto","chegirma"]]},
+  {t:"Sog'liq va tana a'zolari",w:3,tasks:[{t:"Tana a'zolari: testa, occhi, naso, bocca...",tip:""},{t:"Kasallik: Ho mal di testa. Mi fa male...",tip:""},{t:"Doktorda dialog: Cosa le fa male?",tip:""},{t:"500 so'z tekshiruvi: Anki progress",tip:""}],words:[["testa","bosh"],["occhi","ko'zlar"],["naso","burun"],["mal di testa","bosh og'rig'i"],["febbre","isitma"],["raffreddore","shamollash"],["dottore","shifokor"],["farmacia","dorixona"],["medicina","dori"],["mi fa male","og'riq bermoqda"]]},
+  {t:"Transport va sayohat",w:3,tasks:[{t:"Transport: treno, autobus, aereo, taxi",tip:""},{t:"Bilet: Un biglietto per Roma, per favore",tip:""},{t:"Sapienza universitetiga italyancha yo'l so'rash",tip:""},{t:"Italiyaning 5 ta shahrini o'rganish",tip:""}],words:[["treno","poyezd"],["autobus","avtobus"],["aereo","samolyot"],["biglietto","chipta"],["andata","bir tomonlama"],["andata e ritorno","ikki tomonlama"],["binario","platforma"],["in ritardo","kechikib"],["in orario","o'z vaqtida"],["partenza","jo'nash"]]},
+  {t:"3-hafta takrori",w:3,tasks:[{t:"O'zingiz haqida 15 gap yozing (o'tgan, hozirgi, kelajak)",tip:""},{t:"Native speaker bilan 15 daqiqa suhbat (iTalki)",tip:""},{t:"CELI A2 namunaviy topshiriq: writing qismi",tip:""},{t:"Anki: 500 ta so'zni takrorlang",tip:""}],words:[["quindi","shunday ekan"],["però","lekin"],["anche","ham"],["invece","o'rniga"],["comunque","baribir"],["almeno","kamida"],["troppo","haddan ortiq"],["abbastanza","yetarli"],["quasi","deyarli"],["già","allaqachon"]]},
+  {t:"Futuro semplice",w:4,tasks:[{t:"-are→erò, -ere→erò, -ire→irò — kelajak zamon",tip:""},{t:"Noto'g'ri: sarò, avrò, farò, andrò, verrò",tip:""},{t:"Rejalaring haqida 8 gap yozing",tip:"L'anno prossimo andrò in Italia..."},{t:"Sapienza va magistratura leksikasi",tip:""}],words:[["andrò","boraman"],["verrò","kelaman"],["sarò","bo'laman"],["farò","qilaman"],["studierò","o'qiyman"],["lavorerò","ishlayman"],["vivrò","yashayman"],["imparerò","o'rganaman"],["l'anno prossimo","kelasi yil"],["in futuro","kelajakda"]]},
+  {t:"Rasmiy muloqot va email",w:4,tasks:[{t:"Rasmiy murojaatlar: Gentile professore...",tip:""},{t:"Sapienza universitetiga italyancha email yozing",tip:""},{t:"Università leksikasi: iscrizione, esame, laurea...",tip:""},{t:"Italiano accademico iboralari",tip:""}],words:[["università","universitet"],["iscrizione","ro'yxat"],["esame","imtihon"],["laurea","diplom"],["corso","kurs"],["professore","professor"],["lezione","dars"],["aula","auditoriya"],["biblioteca","kutubxona"],["tesi","dissertatsiya"]]},
+  {t:"Condizionale — iltimos va taklif",w:4,tasks:[{t:"Condizionale: vorrei, potrebbe, sarebbe...",tip:"Xushmuomalalik uchun"},{t:"Vorrei un caffè. Potresti aiutarmi?",tip:""},{t:"Universitet administratsiyasiga murojaat mashqi",tip:""},{t:"Anki: bugungi 15 so'z",tip:""}],words:[["vorrei","xohlayman (xushm.)"],["potrei","mumkinmi"],["potrebbe","mumkinmi (u)"],["sarebbe","bo'lardi"],["dovrei","kerak bo'lardi"],["mi piacerebbe","yoqardi"],["per favore","iltimos"],["grazie mille","katta rahmat"],["prego","marhamat"],["mi scusi","kechirasiz"]]},
+  {t:"Muhim grammatika takrori",w:4,tasks:[{t:"Pronomi diretti: lo, la, li, le",tip:""},{t:"Pronomi indiretti: mi, ti, gli, le",tip:""},{t:"Ci va Ne — qachon ishlatiladi?",tip:""},{t:"Online A2 grammar quiz topshiring",tip:""}],words:[["lo vedo","uni ko'raman (erk.)"],["la vedo","uni ko'raman (ayol)"],["li vedo","ularni ko'raman"],["mi piace","menga yoqadi"],["ti piace","senga yoqadimi"],["ci piace","bizga yoqadi"],["ne ho due","ikkitam bor"],["ci vado","u yerga boraman"],["ce ne sono","ulardan bor"],["glielo do","unga beraman"]]},
+  {t:"Tinglash va o'qish mashqlari",w:4,tasks:[{t:"A2 darajasidagi italyan matnni o'qing",tip:"loescher.it saytida bepul materiallar"},{t:"Coffee Break Italian podcast tinglang",tip:""},{t:"Diktant: eshitganingizni yozing, tekshiring",tip:""},{t:"Duolingo: 5 ta yangi dars",tip:""}],words:[["leggere","o'qimoq"],["scrivere","yozmoq"],["ascoltare","tinglamoq"],["parlare","gapirmoq"],["capire","tushunmoq"],["rispondere","javob bermoq"],["domandare","so'ramoq"],["spiegare","tushuntirmoq"],["tradurre","tarjima qilmoq"],["ripetere","qaytarmoq"]]},
+  {t:"Mock A2 test — 1",w:4,tasks:[{t:"CELI A2 namunaviy test: reading qismi (30 daqiqa)",tip:"celi.unistrapg.it"},{t:"CELI A2: listening qismi (20 daqiqa)",tip:""},{t:"Natijalarni tahlil qiling",tip:""},{t:"Zaif mavzularni qaytaring",tip:""}],words:[["il risultato","natija"],["il punteggio","ball"],["passare l'esame","o'tish"],["ripassare","qaytarmoq"],["migliorare","yaxshilash"],["l'errore","xato"],["correggere","to'g'rilash"],["provare","urinmoq"],["riuscire","muvaffaq bo'lmoq"],["superare","yengmoq"]]},
+  {t:"Mock A2 test — 2 + gapirish",w:4,tasks:[{t:"CELI A2: writing — 80-100 so'zlik xat",tip:""},{t:"Speaking: 3 daqiqa o'zingiz haqida gapiring",tip:"Yozib oling va eshiting"},{t:"Yozib olgan gapingizni tinglang — xatolarni toping",tip:""},{t:"Native speaker bilan 20 daqiqa suhbat",tip:""}],words:[["mi presento","o'zimni tanishtiray"],["sono nata a","...da tug'ilganman"],["studio legge","huquq o'qiyman"],["voglio studiare","o'qishni xohlayman"],["in futuro","kelajakda"],["spero di","umid qilamanki"],["ho esperienza","tajribam bor"],["mi interessa","menga qiziq"],["è importante","bu muhim"],["nel diritto","huquq sohasida"]]},
+  {t:"Final takror — barcha mavzular",w:4,tasks:[{t:"600+ so'z Anki takrori — barcha kartochkalar",tip:""},{t:"Grammatika xulosa: essere, avere, zamonlar",tip:""},{t:"Dialog: universitetning admissions ofisi bilan",tip:""},{t:"Italyancha kundalik yozing (10 gap)",tip:""}],words:[["ce la faccio","uddan chiqaman"],["ho imparato","o'rgandim"],["sono pronta","tayyorman"],["un mese fa","bir oy oldin"],["ora so","endi bilaman"],["continuerò","davom ettiraman"],["sono orgogliosa","faxrlanaman"],["ottimo","a'lo"],["grazie a","...tufayli"],["il viaggio inizia","safar boshlanadi"]]},
+  {t:"A2 sertifikat kuni",w:4,tasks:[{t:"CELI A2 yoki PLIDA A2 imtihonga ro'yxatdan o'ting",tip:"celi.unistrapg.it"},{t:"5 daqiqalik nutq: o'zingiz + orzularingiz",tip:""},{t:"Sapienza qabul talablarini italyan tilida o'qing",tip:""},{t:"Keyingi qadam: B1 uchun plan tuzing",tip:""}],words:[["certificazione","sertifikat"],["livello","daraja"],["superato","o'tilgan"],["congratulazioni","tabriklayman"],["eccellente","ajoyib"],["in bocca al lupo","omad tilayman"],["crepi","rahmat (javob)"],["avanzato","yuqori"],["prossimo obiettivo","keyingi maqsad"],["B1","B1 daraja"]]}
+];
+
+const WN=["","A1 bazasi","Grammatika poydevori","Kundalik hayot","A2 mustahkamlash"];
+let ST=JSON.parse(localStorage.getItem('it30')||'{}');
+const save=()=>localStorage.setItem('it30',JSON.stringify(ST));
+const getToday=()=>{const s=parseInt(localStorage.getItem('it30_start')||'0');if(!s)return 1;return Math.min(Math.floor((Date.now()-s)/86400000)+1,30)};
+const initStart=()=>{if(!localStorage.getItem('it30_start'))localStorage.setItem('it30_start',Date.now().toString())};
+const getDone=()=>Object.keys(ST).filter(k=>k.startsWith('d_')&&ST[k]&&ST[k].done).length;
+const getStreak=()=>{let s=0;for(let i=getToday();i>=1;i--){if(ST['d_'+i]&&ST['d_'+i].done)s++;else break}return s};
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const showToast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)};
+
+function updateStats(){
+  const d=getDone();
+  document.getElementById('s-done').textContent=d;
+  document.getElementById('s-streak').textContent=getStreak();
+  document.getElementById('s-words').textContent=d*10;
+  document.getElementById('s-score').textContent=ST.bestScore||0;
+  const p=Math.round((d/30)*100);
+  document.getElementById('pbar').style.width=p+'%';
+  document.getElementById('ptext').textContent=d+' / 30';
+}
+
+function showPage(name,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  el.classList.add('active');
+  if(name==='oyinlar'){document.getElementById('games-home').style.display='';document.getElementById('game-area').style.display='none';renderGamesHome()}
+}
+
+function renderMain(){
+  const today=getToday();let html='';
+  if(getDone()>0){html+=`<div class="streak-banner"><div class="streak-icon">🔥</div><div class="streak-text"><div class="streak-title">Ketma-ket kun</div><div class="streak-sub">Har kuni o'rgan — A2 sizniki!</div></div><div class="streak-num">${getStreak()}</div></div>`}
+  let cw=0;
+  DAYS.forEach((day,i)=>{
+    const dn=i+1,wk=Math.ceil(dn/7);
+    if(wk!==cw){if(cw>0)html+='</div></div>';cw=wk;html+=`<div class="week-section"><div class="week-header"><span class="week-num">${wk}-hafta</span><span class="week-title">${WN[wk]}</span><div class="week-line"></div></div><div class="days-grid">`}
+    const isDone=ST['d_'+dn]&&ST['d_'+dn].done,isToday=dn===today,isLocked=dn>today;
+    let cc='day-card',badge='';
+    if(isDone){cc+=' done';badge='<span class="day-badge badge-done">Bajarildi</span>'}
+    else if(isToday){cc+=' today';badge='<span class="day-badge badge-today">Bugun</span>'}
+    else if(isLocked){cc+=' locked';badge='<span class="day-badge badge-locked">Kutilmoqda</span>'}
+    const ct=(ST['d_'+dn]&&ST['d_'+dn].tasks)||[];
+    const tp=day.tasks.slice(0,3).map(t=>`<li class="${ct.includes(t.t)?'td':''}">${t.t.length>44?t.t.slice(0,44)+'...':t.t}</li>`).join('');
+    html+=`<div class="${cc}" onclick="openDay(${dn})"><div class="day-top"><span class="day-num">${dn}-kun</span>${badge}</div><div class="day-topic">${day.t}</div><ul class="day-tasks">${tp}</ul></div>`;
+  });
+  html+='</div></div>';
+  document.getElementById('main-content').innerHTML=html;updateStats();
+}
+
+let curDay=null;
+function openDay(dn){
+  if(dn>getToday()){showToast('Bu kun hali ochmagan!');return}
+  curDay=dn;const day=DAYS[dn-1];
+  const isDone=ST['d_'+dn]&&ST['d_'+dn].done;
+  const ct=(ST['d_'+dn]&&ST['d_'+dn].tasks)||[];
+  document.getElementById('m-daynum').textContent=dn+'-kun · '+Math.ceil(dn/7)+'-hafta';
+  document.getElementById('m-title').textContent=day.t;
+  let b=`<div class="modal-tabs">
+    <div class="modal-tab active" onclick="mTab('vazifalar',this)">Vazifalar</div>
+    <div class="modal-tab" onclick="mTab('sozlar',this)">So'zlar</div>
+    <div class="modal-tab" onclick="mTab('mashq',this)">Tezkor mashq</div>
+  </div>
+  <div class="modal-section active" id="ms-vazifalar">`;
+  day.tasks.forEach((task,i)=>{
+    const done=ct.includes(task.t);
+    b+=`<div class="task-item ${done?'completed':''}" onclick="toggleTask(${dn},${i})"><div class="task-check">${done?'✓':''}</div><div><div class="task-text">${task.t}</div>${task.tip?`<div class="task-tip">${task.tip}</div>`:''}</div></div>`;
+  });
+  b+=`</div><div class="modal-section" id="ms-sozlar"><div class="modal-words"><div style="font-size:12px;color:var(--muted);margin-bottom:10px">Anki'ga qo'shing — har kuni takrorlang</div><div class="words-grid">`;
+  day.words.forEach(([it,uz])=>{b+=`<div class="word-pair"><span class="word-it">${it}</span><span class="word-uz">— ${uz}</span></div>`});
+  b+=`</div></div></div><div class="modal-section" id="ms-mashq"><div id="qgame"></div></div>`;
+  b+=`<button class="complete-btn ${isDone?'done-btn':''}" onclick="completeDay(${dn})">${isDone?'Bajarilgan ✓':'Kunni yakunlash'}</button>`;
+  document.getElementById('m-body').innerHTML=b;
+  document.getElementById('day-modal').classList.add('open');
+}
+
+function mTab(name,el){
+  document.querySelectorAll('.modal-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.modal-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('ms-'+name).classList.add('active');el.classList.add('active');
+  if(name==='mashq'&&curDay)renderQuickGame(curDay);
+}
+
+function renderQuickGame(dn){
+  const day=DAYS[dn-1];const pool=shuffle([...day.words]);const qs=pool.slice(0,5);
+  let qi=0,sc=0;
+  function showQ(){
+    if(qi>=qs.length){document.getElementById('qgame').innerHTML=`<div style="text-align:center;padding:2rem"><div style="font-family:var(--serif);font-size:36px;color:var(--accent2)">${sc}/${qs.length}</div><div style="color:var(--muted);margin-top:6px;font-size:14px">${sc>=4?'Zo\'r!':sc>=2?'Yaxshi!':'Yana mashq qiling.'}</div></div>`;return}
+    const [it,uz]=qs[qi];const wrong=pool.filter(w=>w[1]!==uz).sort(()=>Math.random()-0.5).slice(0,3).map(w=>w[1]);const opts=shuffle([uz,...wrong]);
+    let h=`<div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">${qi+1}/${qs.length}</div>`;
+    h+=`<div class="game-q" style="font-size:18px;margin-bottom:10px">${it}</div><div class="opts-grid">`;
+    opts.forEach(o=>{h+=`<button class="opt-btn" onclick="qAns(this,'${o.replace(/'/g,"\\'")}','${uz.replace(/'/g,"\\'")}')">${o}</button>`});
+    h+=`</div><div class="game-fb" id="qfb"></div><button class="next-btn" id="qnxt" onclick="qi++;showQ()">Keyingisi →</button>`;
+    document.getElementById('qgame').innerHTML=h;
+    window.showQ=showQ;
+    window.qAns=(btn,sel,correct)=>{
+      document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+      const fb=document.getElementById('qfb');
+      if(sel===correct){btn.classList.add('correct');fb.textContent='To\'g\'ri! ✓';fb.className='game-fb ok';sc++}
+      else{btn.classList.add('wrong');fb.textContent='Noto\'g\'ri. To\'g\'risi: '+correct;fb.className='game-fb err';document.querySelectorAll('.opt-btn').forEach(b=>{if(b.textContent===correct)b.classList.add('correct')})}
+      document.getElementById('qnxt').style.display='block';
+    };
+  }
+  window.qi=qi;showQ();
+}
+
+function toggleTask(dn,idx){
+  const tt=DAYS[dn-1].tasks[idx].t;
+  if(!ST['d_'+dn])ST['d_'+dn]={tasks:[],done:false};
+  const tasks=ST['d_'+dn].tasks,i=tasks.indexOf(tt);
+  if(i===-1)tasks.push(tt);else tasks.splice(i,1);
+  save();openDay(dn);renderMain();
+}
+
+function completeDay(dn){
+  if(!ST['d_'+dn])ST['d_'+dn]={tasks:[],done:false};
+  if(ST['d_'+dn].done)return;
+  ST['d_'+dn].done=true;ST['d_'+dn].tasks=DAYS[dn-1].tasks.map(t=>t.t);
+  save();closeModal();renderMain();showToast(dn+'-kun bajarildi! Bravo! 🎉');
+}
+
+function closeModal(){document.getElementById('day-modal').classList.remove('open');curDay=null}
+function handleOvClick(e){if(e.target===document.getElementById('day-modal'))closeModal()}
+
+// ===== GAMES =====
+const ALL_WORDS=[];DAYS.forEach(d=>d.words.forEach(w=>ALL_WORDS.push(w)));
+
+function renderGamesHome(){
+  document.getElementById('games-home').innerHTML=`<div style="padding-top:2rem;margin-bottom:1.5rem">
+    <div style="font-family:var(--serif);font-size:24px;font-weight:500;margin-bottom:4px">O'yinlar</div>
+    <div style="font-size:14px;color:var(--muted)">O'ynab o'rgan — so'zlar yodda qoladi</div>
+  </div>
+  <div class="games-grid">
+    <div class="game-card" onclick="startGame('translate')"><div class="game-icon">🔤</div><div class="game-title">Tarjima o'yini</div><div class="game-desc">Italyancha so'z beriladi — o'zbekcha variantni tanlang</div><span class="game-badge">4 variant</span></div>
+    <div class="game-card" onclick="startGame('match')"><div class="game-icon">🔗</div><div class="game-title">Juftlik toping</div><div class="game-desc">Italyancha va o'zbekcha so'zlarni to'g'ri juftlashtiring</div><span class="game-badge">Xotira o'yini</span></div>
+    <div class="game-card" onclick="startGame('fill')"><div class="game-icon">✏️</div><div class="game-title">Bo'sh joy to'ldiring</div><div class="game-desc">Gapdagi bo'sh joyga to'g'ri so'z yozing</div><span class="game-badge">Yozish</span></div>
+    <div class="game-card" onclick="startGame('listen')"><div class="game-icon">👂</div><div class="game-title">Eshiting va tanlang</div><div class="game-desc">Talaffuzni eshiting — to'g'ri so'zni toping</div><span class="game-badge">Tinglash</span></div>
+  </div>`;
+}
+
+function startGame(type){
+  document.getElementById('games-home').style.display='none';
+  const ga=document.getElementById('game-area');ga.style.display='block';ga.innerHTML='';
+  const pool=shuffle([...ALL_WORDS]).slice(0,40);
+  if(type==='translate')gameTranslate(pool);
+  else if(type==='match')gameMatch();
+  else if(type==='fill')gameFill();
+  else if(type==='listen')gameListen(pool);
+}
+
+function backBtn(){return`<button class="back-btn" onclick="document.getElementById('games-home').style.display='';document.getElementById('game-area').style.display='none';renderGamesHome()">← O'yinlarga qaytish</button>`}
+
+function gameTranslate(pool){
+  let qi=0,sc=0;const total=Math.min(12,pool.length);
+  function showQ(){
+    if(qi>=total){endGame(sc,total,'translate');return}
+    const [it,uz]=pool[qi];const wrong=pool.filter(w=>w[1]!==uz).sort(()=>Math.random()-0.5).slice(0,3).map(w=>w[1]);const opts=shuffle([uz,...wrong]);
+    document.getElementById('game-area').innerHTML=backBtn()+`<div class="game-area">
+      <div class="game-hdr"><span class="game-name">🔤 Tarjima o'yini</span><span class="game-sc">${sc}/${total}</span></div>
+      <div class="prog-bar"><div class="prog-inner" style="width:${Math.round(qi/total*100)}%"></div></div>
+      <div class="game-q">${it}</div>
+      <div class="opts-grid">${opts.map(o=>`<button class="opt-btn" onclick="gA(this,'${o.replace(/'/g,"\\'")}','${uz.replace(/'/g,"\\'")}')">${o}</button>`).join('')}</div>
+      <div class="game-fb" id="gfb"></div>
+      <button class="next-btn" id="gnxt" onclick="gNxt()">Keyingisi →</button>
+    </div>`;
+    window.gNxt=()=>{qi++;showQ()};
+    window.gA=(btn,sel,c)=>{
+      document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+      const fb=document.getElementById('gfb');
+      if(sel===c){btn.classList.add('correct');fb.textContent='To\'g\'ri! ✓';fb.className='game-fb ok';sc++}
+      else{btn.classList.add('wrong');fb.textContent='Noto\'g\'ri. To\'g\'risi: '+c;fb.className='game-fb err';document.querySelectorAll('.opt-btn').forEach(b=>{if(b.textContent===c)b.classList.add('correct')})}
+      document.getElementById('gnxt').style.display='block';
+    };
+  }showQ();
+}
+
+function gameMatch(){
+  const pool=shuffle([...ALL_WORDS]).slice(0,6);let sel=null,matched=0;
+  const its=shuffle(pool.map(w=>w[0]));const uzs=shuffle(pool.map(w=>w[1]));
+  document.getElementById('game-area').innerHTML=backBtn()+`<div class="game-area">
+    <div class="game-hdr"><span class="game-name">🔗 Juftlik toping</span><span class="game-sc" id="msc">0/${pool.length}</span></div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:1rem">So'zni uning tarjimasiga ulang</div>
+    <div class="match-grid">
+      <div class="match-col" id="col-it">${its.map(w=>`<div class="match-item" data-it="${w}" onclick="mClick(this,'it')">${w}</div>`).join('')}</div>
+      <div class="match-col" id="col-uz">${uzs.map(w=>`<div class="match-item" data-uz="${w}" onclick="mClick(this,'uz')">${w}</div>`).join('')}</div>
+    </div>
+  </div>`;
+  window.mClick=function(el,type){
+    if(el.classList.contains('matched'))return;
+    if(sel===null){sel=el;el.classList.add('sel');return}
+    if(sel===el){sel.classList.remove('sel');sel=null;return}
+    const a=sel,b=el;
+    const itEl=type==='uz'?a:b,uzEl=type==='uz'?b:a;
+    const pair=pool.find(w=>w[0]===itEl.dataset.it&&w[1]===uzEl.dataset.uz);
+    if(pair){a.classList.remove('sel');a.classList.add('matched');b.classList.add('matched');matched++;document.getElementById('msc').textContent=matched+'/'+pool.length;sel=null;
+      if(matched===pool.length)setTimeout(()=>{document.getElementById('game-area').innerHTML=backBtn()+`<div class="game-area"><div class="result-area"><div class="result-num">🎉</div><div class="result-lbl">Barcha juftliklar topildi!</div><button class="play-again" onclick="startGame('match')">Yana o'ynash</button></div></div>`;},500)}
+    else{a.classList.add('flash');b.classList.add('flash');a.classList.remove('sel');setTimeout(()=>{a.classList.remove('flash');b.classList.remove('flash');},500);sel=null;}
+  };
+}
+
+function gameFill(){
+  const SENTS=[
+    {s:"Io _____ studentessa di legge.",a:"sono",h:"essere (io)"},
+    {s:"Lei _____ a Roma.",a:"abita",h:"-are fe'li (lei)"},
+    {s:"Noi _____ italiano a scuola.",a:"studiamo",h:"-are fe'li (noi)"},
+    {s:"Ieri ho _____ la pizza.",a:"mangiato",h:"passato prossimo (mangiare)"},
+    {s:"Domani _____ all'università.",a:"andrò",h:"futuro (andare)"},
+    {s:"Il libro è _____ tavolo.",a:"sul",h:"su + il = sul"},
+    {s:"Come _____? Bene, grazie!",a:"stai",h:"stare (tu)"},
+    {s:"_____ chiamo Gulsevar.",a:"Mi",h:"o'zini tanishtirish"},
+    {s:"Loro non _____ italiano.",a:"parlano",h:"-are fe'li (loro)"},
+    {s:"Ho _____ anni (21).",a:"ventuno",h:"21 yoshdaman"}
+  ];
+  const pool=shuffle([...SENTS]);let qi=0,sc=0;
+  function showQ(){
+    if(qi>=pool.length){endGame(sc,pool.length,'fill');return}
+    const {s,a,h}=pool[qi];const parts=s.split('_____');
+    document.getElementById('game-area').innerHTML=backBtn()+`<div class="game-area">
+      <div class="game-hdr"><span class="game-name">✏️ Bo'sh joy to'ldiring</span><span class="game-sc">${sc}/${pool.length}</span></div>
+      <div class="prog-bar"><div class="prog-inner" style="width:${Math.round(qi/pool.length*100)}%"></div></div>
+      <div class="fill-sent">${parts[0]}<input class="fill-inp" id="fi" placeholder="..." autocomplete="off">${parts[1]||''}</div>
+      <div style="font-size:12px;color:var(--muted);text-align:center;margin-bottom:10px">Maslahat: ${h}</div>
+      <div class="game-fb" id="ffb"></div>
+      <button class="check-btn" onclick="fCheck('${a}')">Tekshirish</button>
+      <button class="next-btn" id="fnxt" onclick="qi++;fShowQ()">Keyingisi →</button>
+    </div>`;
+    document.getElementById('fi').focus();
+    document.getElementById('fi').onkeydown=e=>{if(e.key==='Enter')fCheck(a)};
+    window.fShowQ=showQ;
+    window.fCheck=function(correct){
+      const inp=document.getElementById('fi');const val=inp.value.trim().toLowerCase();
+      inp.disabled=true;document.querySelector('.check-btn').disabled=true;
+      const fb=document.getElementById('ffb');
+      if(val===correct.toLowerCase()){inp.classList.add('ok');fb.textContent='To\'g\'ri! ✓';fb.className='game-fb ok';sc++}
+      else{inp.classList.add('er');fb.textContent='Noto\'g\'ri. To\'g\'risi: '+correct;fb.className='game-fb err'}
+      document.getElementById('fnxt').style.display='block';
+    };
+  }showQ();
+}
+
+function gameListen(pool){
+  let qi=0,sc=0;const total=Math.min(8,pool.length);
+  const speak=t=>{if('speechSynthesis' in window){const u=new SpeechSynthesisUtterance(t);u.lang='it-IT';u.rate=0.8;speechSynthesis.cancel();speechSynthesis.speak(u)}};
+  function showQ(){
+    if(qi>=total){endGame(sc,total,'listen');return}
+    const [it,uz]=pool[qi];const wrong=pool.filter(w=>w[0]!==it).sort(()=>Math.random()-0.5).slice(0,3).map(w=>w[0]);const opts=shuffle([it,...wrong]);
+    document.getElementById('game-area').innerHTML=backBtn()+`<div class="game-area">
+      <div class="game-hdr"><span class="game-name">👂 Eshiting va tanlang</span><span class="game-sc">${sc}/${total}</span></div>
+      <div class="prog-bar"><div class="prog-inner" style="width:${Math.round(qi/total*100)}%"></div></div>
+      <div class="game-q" style="flex-direction:column;gap:10px">
+        <div style="font-size:13px;color:var(--muted)">O'zbekcha: <strong>${uz}</strong></div>
+        <button onclick="speak('${it}')" style="padding:10px 24px;background:var(--accent2);color:#fff;border:none;border-radius:8px;font-size:15px;cursor:pointer;font-family:var(--sans)">🔊 Eshitish</button>
+      </div>
+      <div class="opts-grid" style="margin-top:1rem">${opts.map(o=>`<button class="opt-btn" onclick="lA(this,'${o.replace(/'/g,"\\'")}','${it.replace(/'/g,"\\'")}')">${o}</button>`).join('')}</div>
+      <div class="game-fb" id="lfb"></div>
+      <button class="next-btn" id="lnxt" onclick="lNxt()">Keyingisi →</button>
+    </div>`;
+    window.speak=speak;
+    setTimeout(()=>speak(it),400);
+    window.lNxt=()=>{qi++;showQ()};
+    window.lA=(btn,sel,c)=>{
+      document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+      const fb=document.getElementById('lfb');
+      if(sel===c){btn.classList.add('correct');fb.textContent='To\'g\'ri! ✓';fb.className='game-fb ok';sc++}
+      else{btn.classList.add('wrong');fb.textContent='Noto\'g\'ri. To\'g\'risi: '+c;fb.className='game-fb err';document.querySelectorAll('.opt-btn').forEach(b=>{if(b.textContent===c)b.classList.add('correct')})}
+      document.getElementById('lnxt').style.display='block';
+    };
+  }showQ();
+}
+
+function endGame(sc,total,type){
+  const pct=Math.round(sc/total*100);
+  if(pct>=(ST.bestScore||0)){ST.bestScore=pct;save();updateStats()}
+  document.getElementById('game-area').innerHTML=backBtn()+`<div class="game-area"><div class="result-area">
+    <div class="result-num">${sc}/${total}</div>
+    <div class="result-lbl">${pct>=80?'Ajoyib natija!':pct>=50?'Yaxshi! Yana mashq qiling.':'Ko\'proq o\'qish kerak.'}</div>
+    <button class="play-again" onclick="startGame('${type}')">Yana o'ynash</button>
+  </div></div>`;
+}
+
+// ===== TEST =====
+const TQS=[
+  {q:"'Io sono studentessa' — 'sono' qaysi fe'l?",o:["avere","essere","fare","stare"],a:1},
+  {q:"'Ho mangiato la pizza' — bu qaysi zamon?",o:["Presente","Futuro","Passato prossimo","Imperfetto"],a:2},
+  {q:"'Il libro' so'zini ko'plikda ayting:",o:["il libri","la libra","i libri","le libro"],a:2},
+  {q:"'Andata e ritorno' nima degani?",o:["Bilet narxi","Ikki tomonlama chipta","Bir tomonlama","Qaytish vaqti"],a:1},
+  {q:"'Vorrei un caffè' — qaysi grammatik shakl?",o:["Presente","Futuro","Imperativo","Condizionale"],a:3},
+  {q:"'Vado ___ Roma' — bo'sh joyga nima kerak?",o:["di","in","a","da"],a:2},
+  {q:"'Ho fame' nima degani?",o:["Uxlagim kelmoqda","Chanqadim","Ochdim","Shoshyapman"],a:2},
+  {q:"'Grazie mille' nima degani?",o:["Rahmat","Katta rahmat","Siz xush keldingiz","Iltimos"],a:1},
+  {q:"'Quanto costa?' nima degani?",o:["Qayerda?","Qachon?","Qancha turadi?","Kim?"],a:2},
+  {q:"'Buongiorno' qachon aytiladi?",o:["Kechqurun","Ertalab va tushgacha","Kechasi","Har doim"],a:1},
+  {q:"'Un, una, uno' — bular nima?",o:["Aniq artikl","Noaniq artikl","Son","Sifat"],a:1},
+  {q:"'Dov'è la stazione?' nima degani?",o:["Stantsiya qachon?","Stantsiya qayerda?","Stantsiya narxi?","Stantsiyaga qanday?"],a:1},
+  {q:"'Ho lavorato ieri' — 'ieri' nima degani?",o:["Bugun","Ertaga","Kecha","Hozir"],a:2},
+  {q:"'Sono di Tashkent' — nima degani?",o:["Toshkentga boraman","Toshkentdanman","Toshkentda yashayman","Toshkentni yaxshi ko'raman"],a:1},
+  {q:"'Futuro semplice'da 'andare' (io) qanday?",o:["vado","andrà","andrò","andiamo"],a:2},
+  {q:"'Mi chiamo' nima degani?",o:["Uyim bor","Ismim...","Men...danman","Menga yoqadi"],a:1},
+  {q:"'Passato prossimo'da 'mangiare' (io):",o:["mangio","mangiavo","ho mangiato","mangerò"],a:2},
+  {q:"'A destra' nima degani?",o:["To'g'ri","Chapga","O'ngga","Orqaga"],a:2},
+  {q:"'Non capisco' nima degani?",o:["Tushundim","Tushunmadim","Bilaman","Bilmayman"],a:1},
+  {q:"'La biblioteca' nima?",o:["Dorixona","Kutubxona","Restoran","Bozor"],a:1},
+  {q:"'Il conto, per favore!' — qayerda aytiladi?",o:["Do'konda","Uyda","Restoranda","Universitetda"],a:2},
+  {q:"'-are' fe'lining 'noi' shakli qanday tugaydi?",o:["-o","-iamo","-ate","-ano"],a:1},
+  {q:"'Sono pronta' — bu kim gapiradi?",o:["Erkak","Ayol","Ikkalasi","Bola"],a:1},
+  {q:"'Potrebbe' — bu qaysi fe'ldan?",o:["essere","avere","potere","volere"],a:2},
+  {q:"'Prima, poi, dopo' — bu so'zlar nima?",o:["Rang nomlari","Ketma-ketlik so'zlari","Transport nomlari","Sonlar"],a:1},
+  {q:"Italyan tilida 'thank you' qanday?",o:["Prego","Ciao","Grazie","Bene"],a:2},
+  {q:"'Ho mal di testa' nima degani?",o:["Qo'lim og'riydi","Boshim og'riydi","Oyog'im og'riydi","Qornim og'riydi"],a:1},
+  {q:"'In bocca al lupo!' — bu nima?",o:["Xavf signali","Omad tilash ibora","Salomlashish","Xayrlashish"],a:1},
+  {q:"'Passato prossimo'da essere bilan qaysi fe'l ishlatiladi?",o:["mangiare","lavorare","andare","parlare"],a:2},
+  {q:"A2 darajasida taxminan necha so'z bilish kerak?",o:["200-300","500-600","1000-1500","100-150"],a:1}
+];
+let tState={};
+
+function startTest(){
+  tState={qi:0,sc:0,wrong:[],qs:shuffle([...TQS]).slice(0,15)};
+  document.getElementById('test-home').style.display='none';
+  document.getElementById('test-area').style.display='block';
+  renderTQ();
+}
+
+function renderTQ(){
+  const{qi,sc,qs}=tState;
+  if(qi>=qs.length){renderTResult();return}
+  const q=qs[qi];const pct=Math.round(qi/qs.length*100);
+  document.getElementById('test-area').innerHTML=`<div class="test-area">
+    <div class="test-prog"><div class="tpb-out"><div class="tpb-in" style="width:${pct}%"></div></div><span style="font-size:13px;color:var(--muted);white-space:nowrap">${qi+1}/${qs.length}</span></div>
+    <div class="test-q">${q.q}</div>
+    <div class="test-opts">${q.o.map((o,i)=>`<button class="test-opt" onclick="tAns(${i})">${o}</button>`).join('')}</div>
+  </div>`;
+  window.tAns=function(i){
+    const q=tState.qs[tState.qi];
+    document.querySelectorAll('.test-opt').forEach(b=>b.disabled=true);
+    document.querySelectorAll('.test-opt')[q.a].classList.add('correct');
+    if(i===q.a){tState.sc++}else{document.querySelectorAll('.test-opt')[i].classList.add('wrong');tState.wrong.push(q)}
+    setTimeout(()=>{tState.qi++;renderTQ()},900);
+  };
+}
+
+function renderTResult(){
+  const{sc,qs,wrong}=tState;const pct=Math.round(sc/qs.length*100);
+  const msg=pct>=80?'A2 ga tayyor!':pct>=60?'Yaxshi! Yana mashq qiling.':'Ko\'proq o\'rganish kerak.';
+  const clr=pct>=80?'var(--done)':pct>=60?'var(--accent2)':'#e24b4a';
+  if(pct>(parseInt(ST.bestScore)||0)){ST.bestScore=pct;save();updateStats()}
+  let h=`<div class="test-result">
+    <div class="result-pct" style="color:${clr}">${pct}%</div>
+    <div style="font-size:15px;color:var(--muted);margin-top:8px;margin-bottom:1.5rem">${msg}</div>
+    <div class="test-break">
+      <div class="tb-item"><div class="tb-num" style="color:var(--done)">${sc}</div><div class="tb-lbl">To'g'ri</div></div>
+      <div class="tb-item"><div class="tb-num" style="color:var(--accent2)">${qs.length-sc}</div><div class="tb-lbl">Noto'g'ri</div></div>
+      <div class="tb-item"><div class="tb-num">${pct}%</div><div class="tb-lbl">Ball</div></div>
+    </div>`;
+  if(wrong.length){h+=`<div style="text-align:left;margin-top:1rem"><div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Noto'g'ri javoblar:</div>`;wrong.forEach(q=>{h+=`<div style="font-size:13px;padding:8px;border-radius:6px;background:#fde8e4;margin-bottom:6px;color:#9b2213">× ${q.q}</div>`});h+=`</div>`}
+  h+=`<button class="play-again" onclick="startTest()" style="margin-top:1.5rem">Qayta topshirish</button>
+    <br><button onclick="document.getElementById('test-home').style.display='';document.getElementById('test-area').style.display='none'" style="margin-top:10px;padding:10px 24px;border:1px solid var(--border);border-radius:8px;background:none;cursor:pointer;font-family:var(--sans);font-size:14px">Bosh sahifa</button>
+  </div>`;
+  document.getElementById('test-area').innerHTML=h;
+}
+
+// ===== VIDEO =====
+function openVid(url,title,channel){
+  const id=url.match(/v=([^&]+)/)?.[1];
+  document.getElementById('vtitle').textContent=title;
+  document.getElementById('vchannel').textContent=channel;
+  document.getElementById('vframe').src=id?`https://www.youtube.com/embed/${id}?autoplay=1`:'';
+  document.getElementById('vlink').href=url;
+  document.getElementById('vmod').classList.add('open');
+}
+function closeVid(e){
+  if(!e||e.target===document.getElementById('vmod')){
+    document.getElementById('vmod').classList.remove('open');
+    document.getElementById('vframe').src='';
+  }
+}
+
+initStart();renderMain();renderGamesHome();
+</script>
+</body>
+</html>
